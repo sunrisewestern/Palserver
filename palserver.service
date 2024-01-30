@@ -1,0 +1,17 @@
+[Unit]
+Description=Palworld dedicated server
+Wants=network-online.target
+After=syslog.target network.target nss-lookup.target network-online.target
+
+[Service]
+User=steam
+Group=steam
+ExecStartPre=/usr/games/steamcmd +force_install_dir /home/steam/.steam/steam/steamapps/common/PalServer +login anonymous +app_update 2394010 validate +quit
+ExecStart=/home/steam/.steam/steam/steamapps/common/PalServer/PalServer.sh EpicApp=PalServer -useperfthreads -NoAsyncLoadingThread -UseMultithreadForDS port=8211
+Restart=on-failure
+RestartSec=300
+WorkingDirectory=/home/steam
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
